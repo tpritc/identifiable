@@ -112,6 +112,13 @@ end
 
 The `length` parameter is ignored if you're using `style: :uuid`, because UUIDs already have a fixed length. The `length` parameter also needs be an Integer, and can't be less than `4` or greater than `128`. If any of these constraints are broken, Identifiable will raise an error letting you know.
 
+## Alternatives
+
+I built Identifiable because I never could quite get the other gems that do similar things quite the way that I liked them. You might have the same experience with Identifiable, so if you try Identifiable and it's not quite to your tastes, try out some of these alternatives:
+
+* [**Hashid Rails**](https://github.com/jcypret/hashid-rails) uses [hashids](http://hashids.org/ruby) to seamlessly create hex strings for your primary keys. It's nice because it doesn't require an extra column in your database, but it's limited in what it can do.
+* [**Public UID**](https://github.com/equivalent/public_uid) is a real power-users public ID gem, and until I made this it was the main way I would build public ID features into the apps I was working on, but I found it too heavy for what I wanted 90% of the time, which is why Identifiable is customizable, but not _too_ customizable. If you find Identifiable isn't customizable or powerful enough for your needs, give Public UID a go!
+
 ## Contributing
 
 Bug reports and pull requests are welcome on [GitHub](https://github.com/tpritc/identifiable). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/tpritc/identifiable/blob/main/CODE_OF_CONDUCT.md).
