@@ -1,0 +1,36 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    name: 'Test Suite'
+    strategy:
+      matrix:
+        ruby: [2.5, 2.6, 2.7]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: bundle-${{ matrix.ruby }}-${{ hashFiles('**/*.gemspec') }}
+          restore-keys: bundle-${{ matrix.ruby }}
+      - run: bundle install --jobs 4 --retry 3 --path vendor/bundle
+      - run: bundle exec rake
+  lint:
+    name: 'Rubocop'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.7.2
+      - uses: actions/cache@v1
+        with:
+          path: vendor/bundle
+          key: bundle-2.7.2-${{ hashFiles('**/*.gemspec') }}
+          restore-keys: bundle-2.7.2
+      - run: bundle install --jobs 4 --retry 3 --path vendor/bundle
+      - run: bundle exec rubocop
