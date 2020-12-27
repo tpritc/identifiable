@@ -35,6 +35,10 @@ module Identifiable
         result
       end
 
+      def to_key
+        [self[self.class.identifiable_column]]
+      end
+
       # We only accept symbols for the column parameter, so we need to raise an
       # error if anything other than a symbol is passed in.
       def _identifiable_validate_column_must_be_a_symbol
