@@ -25,7 +25,7 @@ module Identifiable
       end
 
       def find_by_public_id(public_id)
-        where(Hash[identifiable_column, public_id]).first
+        where({ identifiable_column => public_id }).first
       end
 
       def find_by_public_id!(public_id)
