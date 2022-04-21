@@ -72,7 +72,7 @@ While Identifiable strives to have useful defaults, you may want to customize yo
 
 ### Different public ID styles
 
-By default, Identifiable will generate numeric public IDs, with each character between 0 and 9, but it can also generate alphanumeric public IDs and UUID public ids. To chose your public ID style, simply pass it in as a parameter to `identifiable` on your model.
+By default, Identifiable will generate numeric public IDs, with each character between 0 and 9, but it can also generate alphanumeric public IDs and UUID public IDs. To choose your public ID style, simply pass it in as a parameter to `identifiable` on your model.
 
 ```ruby
 class Order < ApplicationRecord
@@ -114,19 +114,15 @@ The `length` parameter is ignored if you're using `style: :uuid`, because UUIDs 
 
 ## Alternatives
 
-I built Identifiable because I never could quite get the other gems that do similar things quite the way that I liked them. You might have the same experience with Identifiable, so if you try Identifiable and it's not quite to your tastes, try out some of these alternatives:
+I built Identifiable because I never could quite get the other gems that do similar things quite the way that I liked them. You might have the same experience with Identifiable, so if you try Identifiable and find that it's not quite to your tastes, try out some of these alternatives:
 
 * [**Hashid Rails**](https://github.com/jcypret/hashid-rails) uses [hashids](http://hashids.org/ruby) to seamlessly create hex strings for your primary keys. It's nice because it doesn't require an extra column in your database, but it's limited in what it can do.
 * [**Public UID**](https://github.com/equivalent/public_uid) is a real power-users public ID gem, and until I made this it was the main way I would build public ID features into the apps I was working on, but I found it too heavy for what I wanted 90% of the time, which is why Identifiable is customizable, but not _too_ customizable. If you find Identifiable isn't customizable or powerful enough for your needs, give Public UID a go!
 
 ## Contributing
 
-Bug reports and pull requests are welcome on [GitHub](https://github.com/tpritc/identifiable). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/tpritc/identifiable/blob/main/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/tpritc/identifiable). This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/tpritc/identifiable/blob/main/CODE_OF_CONDUCT.md) while interacting in the project's codebases, issue trackers, chat rooms, and mailing lists.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT). If you or your organization need a custom, commercial license for any reason, [send me an email](mailto:hi@tpritc.com) and I'll be happy to set something up for you.
-
-## Code of Conduct
-
-Everyone interacting in the Identifiable project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/tpritc/identifiable/blob/main/CODE_OF_CONDUCT.md).
