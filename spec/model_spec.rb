@@ -147,7 +147,7 @@ RSpec.describe Identifiable::Model do
   end
 
   describe 'methods' do
-    describe 'self.find_by_public_id' do
+    describe '.find_by_public_id' do
       context 'when passed an existing public id' do
         let(:existing_user) { IdentifiedUser.create(name: 'Jane Doe') }
         let(:existing_public_id) { existing_user.public_id }
@@ -164,7 +164,7 @@ RSpec.describe Identifiable::Model do
       end
     end
 
-    describe 'self.find_by_public_id!' do
+    describe '.find_by_public_id!' do
       context 'when passed an existing public id' do
         let(:existing_user) { IdentifiedUser.create(name: 'Jane Doe') }
         let(:existing_public_id) { existing_user.public_id }
@@ -178,6 +178,18 @@ RSpec.describe Identifiable::Model do
         it 'raises an ActiveRecord::RecordNotFound error' do
           expect { IdentifiedUser.find_by_public_id!('non-existant-public-id') }.to raise_error(ActiveRecord::RecordNotFound)
         end
+      end
+    end
+
+    describe '#to_key' do
+      let(:user) { IdentifiedUser.create(name: 'Jane Doe') }
+
+      it 'returns the public id' do
+        expect(user.to_key).to eq [user.public_id]
+      end
+
+      it 'does not return the standard id' do
+        expect(user.to_key).not_to eq [user.id]
       end
     end
   end

@@ -25,7 +25,7 @@ module Identifiable
       end
 
       def find_by_public_id(public_id)
-        where(Hash[identifiable_column, public_id]).first
+        where({ identifiable_column => public_id }).first
       end
 
       def find_by_public_id!(public_id)
@@ -113,6 +113,14 @@ module Identifiable
 
       # If we got this far, we've got a new valid public ID, time to set it!
       self[self.class.identifiable_column] = new_public_id
+    end
+
+    # By overriding ActiveRecord's `#to_key`, this means that Rails' helpers,
+    # such as `dom_id` will use the public ID instead of the regular ID when
+    # identifying the record. This also means when you do something like
+    # `orders_path(@order)`, it'll use the public ID for the `:id` URL param.
+    def to_key
+      [self[self.class.identifiable_column]]
     end
   end
 end
