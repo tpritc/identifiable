@@ -192,5 +192,17 @@ RSpec.describe Identifiable::Model do
         expect(user.to_key).not_to eq [user.id]
       end
     end
+
+    describe '#to_param' do
+      let(:user) { IdentifiedUser.create(name: 'Jane Doe') }
+
+      it 'returns the public id' do
+        expect(user.to_param).to eq user.public_id
+      end
+
+      it 'does not return the standard id' do
+        expect(user.to_param).not_to eq user.id.to_s
+      end
+    end
   end
 end

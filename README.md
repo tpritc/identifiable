@@ -13,10 +13,10 @@ Identifiable makes it really simple to generate and use random public-facing IDs
 
 ```ruby
 # Before:
-orders_url(id: @order.id) # → https://example.app/orders/14
+orders_url(@order) # → https://example.app/orders/14
 
 # After:
-orders_url(id: @order.public_id) # → https://example.app/orders/87133275
+orders_url(@order) # → https://example.app/orders/87133275
 ```
 
 ## Installation
