@@ -54,11 +54,17 @@ module Identifiable
       # The column parameter must be in the model's table, so check that the
       # column corresponds to a column in the model's table, and raise an error
       # if it is not.
+      #
+      # We suppress ActiveRecord::StatmentInvalid errors just in case the table
+      # does not exist yet.
+      # rubocop:disable Lint/SuppressedException
       def _identifiable_validate_column_must_be_in_the_table
         return if column_names.include? @identifiable_column.to_s
 
         raise Identifiable::Errors::ColumnMustExistInTheTableError.new(@identifiable_column, valid_columns: column_names)
+      rescue ActiveRecord::StatementInvalid
       end
+      # rubocop:enable Lint/SuppressedException
 
       # We can only use valid styles, so check that the style parameter is a
       # valid style, and raise an error if it is not.
