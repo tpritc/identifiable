@@ -6,7 +6,7 @@ Gem::Specification.new do |spec|
   spec.version       = Identifiable::VERSION
   spec.name          = 'identifiable'
   spec.authors       = ['Tom Pritchard']
-  spec.email         = ['hi@tpritc.com']
+  spec.email         = ['tom@tpritc.com']
 
   spec.summary       = 'A quick and easy way to add random, customizable, public-facing IDs to your models.'
   spec.homepage      = 'https://github.com/tpritc/identifiable'
