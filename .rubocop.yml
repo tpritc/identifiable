@@ -1,11 +1,19 @@
 AllCops:
   NewCops: enable
+  SuggestExtensions: false
 
 Gemspec/RequiredRubyVersion:
   Enabled: false
 
+Gemspec/DevelopmentDependencies:
+  Enabled: false
+
 Style/Documentation:
   Enabled: false
+
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
 
 Layout/LineLength:
   Enabled: false
