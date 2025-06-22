@@ -82,6 +82,7 @@ GEM
     securerandom (0.4.1)
     sqlite3 (2.7.0)
       mini_portile2 (~> 2.8.0)
+    sqlite3 (2.7.0-arm64-darwin)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -91,7 +92,8 @@ GEM
     uri (1.0.3)
 
 PLATFORMS
-  ruby
+  arm64-darwin-25
+  x84_64-linux
 
 DEPENDENCIES
   identifiable!
@@ -101,4 +103,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.1.2
+   2.4.1
