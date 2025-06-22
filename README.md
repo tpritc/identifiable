@@ -112,6 +112,36 @@ end
 
 The `length` parameter is ignored if you're using `style: :uuid`, because UUIDs already have a fixed length. The `length` parameter also needs be an Integer, and can't be less than `4` or greater than `128`. If any of these constraints are broken, Identifiable will raise an error letting you know.
 
+## Configuration
+
+By default, Identifiable overrides Rails' `to_key` and `to_param` methods so that your URLs and DOM IDs will use your public IDs instead of your database IDs.
+
+This can break other gems that rely on the default behavior of Rails' `to_key` and `to_param` methods, like devise! You can configure Identifiable to not override these methods if you'd like:
+
+```ruby
+# In config/initializers/identifiable.rb
+Identifiable.configure do |config|
+  config.overwrite_to_key = false
+  config.overwrite_to_param = false
+end
+```
+
+The `overwrite_to_key` option controls whether Rails helpers like `dom_id` use your public ID or your database ID. The default value is `true`.
+
+The `overwrite_to_param` option controls whether URL helpers use your public ID or your database ID in routes. The default value is `true`.
+
+If you disable both options, your application will behave like this:
+
+```ruby
+@order = Order.last
+@order.id # => 14
+@order.public_id # => "87133275"
+orders_url(@order) # => https://example.app/orders/14
+
+# But you can still create URLs using the public ID
+orders_url(@order.public_id) # => https://example.app/orders/87133275
+```
+
 ## Alternatives
 
 I built Identifiable because I never could quite get the other gems that do similar things quite the way that I liked them. You might have the same experience with Identifiable, so if you try Identifiable and find that it's not quite to your tastes, try out some of these alternatives:
