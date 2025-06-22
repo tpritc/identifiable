@@ -182,26 +182,209 @@ RSpec.describe Identifiable::Model do
     end
 
     describe "#to_key" do
-      let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+      context "with default configuration (overwrite_to_key = true)" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_key = true
+          end
+        end
 
-      it "returns the public id" do
-        expect(user.to_key).to eq [user.public_id]
+        let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+
+        it "returns the public id" do
+          expect(user.to_key).to eq [user.public_id]
+        end
+
+        it "does not return the standard id" do
+          expect(user.to_key).not_to eq [user.id]
+        end
       end
 
-      it "does not return the standard id" do
-        expect(user.to_key).not_to eq [user.id]
+      context "when overwrite_to_key is false" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_key = false
+          end
+        end
+
+        after do
+          # Reset to default after test
+          Identifiable.configure do |config|
+            config.overwrite_to_key = true
+          end
+        end
+
+        let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+
+        it "returns the standard ActiveRecord id behavior" do
+          expect(user.to_key).to eq [user.id]
+        end
+
+        it "does not return the public id" do
+          expect(user.to_key).not_to eq [user.public_id]
+        end
+
+        it "still generates the public id" do
+          expect(user.public_id).not_to be_nil
+        end
       end
     end
 
     describe "#to_param" do
-      let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+      context "with default configuration (overwrite_to_param = true)" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_param = true
+          end
+        end
 
-      it "returns the public id" do
-        expect(user.to_param).to eq user.public_id
+        let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+
+        it "returns the public id" do
+          expect(user.to_param).to eq user.public_id
+        end
+
+        it "does not return the standard id" do
+          expect(user.to_param).not_to eq user.id.to_s
+        end
       end
 
-      it "does not return the standard id" do
-        expect(user.to_param).not_to eq user.id.to_s
+      context "when overwrite_to_param is false" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_param = false
+          end
+        end
+
+        after do
+          # Reset to default after test
+          Identifiable.configure do |config|
+            config.overwrite_to_param = true
+          end
+        end
+
+        let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+
+        it "returns the standard ActiveRecord id behavior" do
+          expect(user.to_param).to eq user.id.to_s
+        end
+
+        it "does not return the public id" do
+          expect(user.to_param).not_to eq user.public_id
+        end
+
+        it "still generates the public id" do
+          expect(user.public_id).not_to be_nil
+        end
+      end
+    end
+
+    describe "configuration interaction with custom columns" do
+      let(:custom_column_model) do
+        Class.new(ActiveRecord::Base) do
+          self.table_name = "users"
+          identifiable column: :url_id, style: :alphanumeric
+        end
+      end
+
+      context "when overwrite_to_key is true" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_key = true
+          end
+        end
+
+        it "uses the custom identifiable column for to_key" do
+          record = custom_column_model.create(name: "Test")
+          expect(record.to_key).to eq [record.url_id]
+          expect(record.to_key).not_to eq [record.id]
+        end
+      end
+
+      context "when overwrite_to_key is false" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_key = false
+          end
+        end
+
+        after do
+          # Reset to default after test
+          Identifiable.configure do |config|
+            config.overwrite_to_key = true
+          end
+        end
+
+        it "uses the standard id for to_key even with custom column" do
+          record = custom_column_model.create(name: "Test")
+          expect(record.to_key).to eq [record.id]
+          expect(record.url_id).not_to be_nil # but still generates the custom id
+        end
+      end
+
+      context "when overwrite_to_param is true" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_param = true
+          end
+        end
+
+        it "uses the custom identifiable column for to_param" do
+          record = custom_column_model.create(name: "Test")
+          expect(record.to_param).to eq record.url_id
+          expect(record.to_param).not_to eq record.id.to_s
+        end
+      end
+
+      context "when overwrite_to_param is false" do
+        before do
+          Identifiable.configure do |config|
+            config.overwrite_to_param = false
+          end
+        end
+
+        after do
+          # Reset to default after test
+          Identifiable.configure do |config|
+            config.overwrite_to_param = true
+          end
+        end
+
+        it "uses the standard id for to_param even with custom column" do
+          record = custom_column_model.create(name: "Test")
+          expect(record.to_param).to eq record.id.to_s
+          expect(record.url_id).not_to be_nil
+        end
+      end
+    end
+
+    describe "both configuration options disabled" do
+      before do
+        Identifiable.configure do |config|
+          config.overwrite_to_key = false
+          config.overwrite_to_param = false
+        end
+      end
+
+      after do
+        # Reset to defaults after test
+        Identifiable.configure do |config|
+          config.overwrite_to_key = true
+          config.overwrite_to_param = true
+        end
+      end
+
+      let(:user) { IdentifiedUser.create(name: "Jane Doe") }
+
+      it "uses standard ActiveRecord behavior for both methods" do
+        expect(user.to_key).to eq [user.id]
+        expect(user.to_param).to eq user.id.to_s
+      end
+
+      it "still provides all identifiable functionality" do
+        expect(user.public_id).not_to be_nil
+        expect(IdentifiedUser.find_by_public_id(user.public_id)).to eq user
+        expect(IdentifiedUser.find_by_public_id!(user.public_id)).to eq user
       end
     end
   end

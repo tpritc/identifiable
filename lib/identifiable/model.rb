@@ -125,6 +125,8 @@ module Identifiable
     # such as `dom_id` will use the public ID instead of the regular ID when
     # identifying the record.
     def to_key
+      return super unless Identifiable.configuration.overwrite_to_key
+
       [self[self.class.identifiable_column]]
     end
 
@@ -132,6 +134,8 @@ module Identifiable
     # such as the `link_to` helpers will default to using the public ID
     # instead of the regular ID when identifying the record.
     def to_param
+      return super unless Identifiable.configuration.overwrite_to_param
+
       self[self.class.identifiable_column]
     end
   end
