@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    identifiable (0.2.0)
+    identifiable (1.0.0)
       activerecord (> 7)
 
 GEM
@@ -83,6 +83,7 @@ GEM
     sqlite3 (2.7.0)
       mini_portile2 (~> 2.8.0)
     sqlite3 (2.7.0-arm64-darwin)
+    sqlite3 (2.7.0-x86_64-linux-gnu)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -94,6 +95,7 @@ GEM
 PLATFORMS
   arm64-darwin-25
   x84_64-linux
+  x86_64-linux
 
 DEPENDENCIES
   identifiable!
