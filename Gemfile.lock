@@ -80,9 +80,10 @@ GEM
       prism (~> 1.4)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sqlite3 (2.7.0)
+    sqlite3 (2.10.2)
       mini_portile2 (~> 2.8.0)
-    sqlite3 (2.7.0-arm64-darwin)
+    sqlite3 (2.10.2-arm64-darwin)
+    sqlite3 (2.10.2-x86_64-linux-gnu)
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
@@ -94,6 +95,7 @@ GEM
 PLATFORMS
   arm64-darwin-25
   x84_64-linux
+  x86_64-linux
 
 DEPENDENCIES
   identifiable!
